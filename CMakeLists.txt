@@ -8,6 +8,10 @@ target_compile_options(GB PRIVATE -Wall -Wextra -pedantic -Werror)
 
 target_include_directories(GB PUBLIC "include/")
 
+find_library(SDL2 PRIVATE SDL2 sdl2 REQUIRED)
+
+target_link_libraries(GB PRIVATE ${SDL2})
+
 add_subdirectory(src)
 
 add_subdirectory(testsuite)

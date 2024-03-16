@@ -12,11 +12,11 @@
 
 typedef struct
 {
-    uint8_t reg[REGISTER_NUMBER];
-    uint8_t memory[MEMORY_SIZE];
+    uint8_t *reg;
+    uint8_t *memory;
     uint16_t pc;
     uint16_t sp;
 } gameboy;
 
 gameboy *make_gameboy(void);
-void free_gameboy(void);
+void free_gameboy(gameboy *gb);

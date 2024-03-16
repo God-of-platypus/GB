@@ -1,17 +1,12 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.28)                                             
+                                                                                 
+project(criterion)                                                            
+                                                                                 
+find_library(CRITERION NAMES criterion lcriterion REQUIRED)
 
-project(test)
+add_executable(test test.c 
+    ../src/gameboy/gameboy.c
+    ../src/register/register.c)                                            
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-FetchContent_MakeAvailable(googletest)
-
-add_executable(test
-    ./test.c
-    )
-
-target_link_libraries(test GTest::gtest GTest::gtest_main)
-
+target_include_directories(test PUBLIC "../include/")
+target_link_libraries(test PRIVATE ${CRITERION})    
