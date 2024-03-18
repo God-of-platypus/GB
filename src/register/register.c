@@ -53,7 +53,10 @@ uint16_t get_value_hl(gameboy *gb)
 
 void set_zero_flag(gameboy *gb, bool value)
 {
-    gb->reg[f] |= (value << ZERO_FLAG_POSITION);
+    if (value)
+        gb->reg[f] |= (1 << ZERO_FLAG_POSITION);
+    else
+        gb->reg[f] &= ~(1 << ZERO_FLAG_POSITION);
 }
 
 bool get_zero_flag(gameboy *gb)
@@ -63,7 +66,10 @@ bool get_zero_flag(gameboy *gb)
 
 void set_subtract_flag(gameboy *gb, bool value)
 {
-    gb->reg[f] |= (value << SUBTRACT_FLAG_POSITION);
+    if (value)
+        gb->reg[f] |= (1 << SUBTRACT_FLAG_POSITION);
+    else
+        gb->reg[f] &= ~(1 << SUBTRACT_FLAG_POSITION);
 }
 
 bool get_subtract_flag(gameboy *gb)
@@ -74,7 +80,10 @@ bool get_subtract_flag(gameboy *gb)
 
 void set_half_flag(gameboy *gb, bool value)
 {
-    gb->reg[f] |= (value << HALF_CARRY_FLAG_POSITION);
+    if (value)
+        gb->reg[f] |= (1 << HALF_CARRY_FLAG_POSITION);
+    else
+        gb->reg[f] &= ~(1 << HALF_CARRY_FLAG_POSITION);
 }
 
 bool get_half_flag(gameboy *gb)
@@ -85,7 +94,10 @@ bool get_half_flag(gameboy *gb)
 
 void set_carry_flag(gameboy *gb, bool value)
 {
-    gb->reg[f] |= (value << CARRY_FLAG_POSITION);
+    if (value)
+        gb->reg[f] |= (1 << CARRY_FLAG_POSITION);
+    else
+        gb->reg[f] &= ~(1 << CARRY_FLAG_POSITION);
 }
 
 bool get_carry_flag(gameboy *gb)

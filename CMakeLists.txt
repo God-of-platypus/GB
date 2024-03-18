@@ -4,7 +4,7 @@ project(GB C)
 
 add_executable(GB)
 
-target_compile_options(GB PRIVATE -Wall -Wextra -pedantic -Werror)
+target_compile_options(GB PRIVATE -Wall -Wextra -pedantic -Werror -g)
 
 target_include_directories(GB PUBLIC "include/")
 
