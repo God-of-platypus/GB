@@ -15,3 +15,9 @@ void andhl(gameboy *gb);
 void andn8(gameboy *gb, uint8_t value);
 
 void cpr8(gameboy *gb, reg r);
+void cphl(gameboy *gb);
+void cpn8(gameboy *gb, uint8_t value);
+
+void decr8(gameboy *gb, reg r);
+void dechl(gameboy *gb);
+

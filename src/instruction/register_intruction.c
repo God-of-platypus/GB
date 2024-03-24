@@ -65,8 +65,7 @@ void addr8(gameboy *gb, reg r)
     set_zero_flag(gb, res == 0);
     set_subtract_flag(gb, false);
     set_carry_flag(gb, cmp != res);
-    set_half_flag(gb, (reg & 0xF) 
-            > (0xF - (rega & 0xF)));
+    set_half_flag(gb, (reg & 0xF) > (0xF - (rega & 0xF)));
     gb->reg[a] = res;
 }
 
@@ -101,7 +100,8 @@ void addn8(gameboy *gb, uint8_t value)
     gb->reg[a] = res;
 }
 
-void andr8(gameboy *gb, reg r) {
+void andr8(gameboy *gb, reg r)
+{
     if (r > l || r < a)
     {
         return;
@@ -118,7 +118,7 @@ void andr8(gameboy *gb, reg r) {
     gb->reg[a] = res;
 }
 
-void andhl(gameboy *gb) 
+void andhl(gameboy *gb)
 {
     uint16_t pos = get_value_hl(gb);
     uint8_t value = gb->memory[pos];
@@ -134,9 +134,10 @@ void andhl(gameboy *gb)
     gb->reg[a] = res;
 }
 
-void andn8(gameboy *gb, uint8_t value) {
+void andn8(gameboy *gb, uint8_t value)
+{
     uint8_t res = gb->reg[a] & value;
-     
+
     set_zero_flag(gb, res == 0);
     set_half_flag(gb, true);
     set_carry_flag(gb, false);
@@ -145,7 +146,7 @@ void andn8(gameboy *gb, uint8_t value) {
     gb->reg[a] = res;
 }
 
-void cpr8(gameboy *gb, reg r) 
+void cpr8(gameboy *gb, reg r)
 {
     uint8_t reg = gb->reg[r];
     uint8_t rega = gb->reg[a];
@@ -155,3 +156,51 @@ void cpr8(gameboy *gb, reg r)
     set_carry_flag(gb, reg > rega);
     set_half_flag(gb, (0xF & reg) > (rega & 0xF));
 }
+
+void cphl(gameboy *gb)
+{
+    uint8_t reg = gb->memory[get_value_hl(gb)];
+    uint8_t rega = gb->reg[a];
+
+    set_zero_flag(gb, reg == rega);
+    set_subtract_flag(gb, true);
+    set_carry_flag(gb, reg > rega);
+    set_half_flag(gb, (0xF & reg) > (rega & 0xF));
+}
+
+void cpn8(gameboy *gb, uint8_t value)
+{
+    uint8_t rega = gb->reg[a];
+
+    set_zero_flag(gb, rega == value);
+    set_subtract_flag(gb, true);
+    set_carry_flag(gb, value > rega);
+    set_half_flag(gb, (0xF & value) > (rega & 0xF));
+}
+
+void decr8(gameboy *gb, reg r)
+{
+    if (r > l || r < a)
+    {
+        return;
+    }
+
+    uint8_t reg = gb->reg[r] == 0 ? 0 : gb->reg[r] - 1;
+    bool half = (reg & 0xF) == 0xF;
+
+    set_subtract_flag(gb, true);
+    set_zero_flag(gb, reg == 0);
+    set_half_flag(gb, half);
+
+    gb->reg[r] = reg;
+}
+
+void dechl(gameboy *gb)
+{
+    uint8_t reg = gb->memory[get_value_hl(gb)] == 0
+        ? 0
+        : gb->memory[get_value_hl(gb)] - 1;
+
+    set_subtract_flag(gb, true);
+}
+

@@ -20,3 +20,4 @@ typedef struct
 
 gameboy *make_gameboy(void);
 void free_gameboy(gameboy *gb);
+
