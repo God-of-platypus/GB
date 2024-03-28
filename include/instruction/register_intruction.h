@@ -23,3 +23,5 @@ void dechl(gameboy *gb);
 
 void incr8(gameboy *gb, reg r);
 void inchl(gameboy *gb);
+
+void orr8(gameboy *gb, reg r);
