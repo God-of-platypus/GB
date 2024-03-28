@@ -21,3 +21,5 @@ void cpn8(gameboy *gb, uint8_t value);
 void decr8(gameboy *gb, reg r);
 void dechl(gameboy *gb);
 
+void incr8(gameboy *gb, reg r);
+void inchl(gameboy *gb);

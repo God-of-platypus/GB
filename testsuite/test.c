@@ -957,22 +957,6 @@ Test(decr8, zero_flag)
     free_gameboy(gb);
 }
 
-Test(decr8, dec_zero)
-{
-    gameboy *gb = make_gameboy();
-    cr_assert(gb != NULL);
-
-    gb->reg[a] = 0x0;
-
-    decr8(gb, a);
-    cr_assert(gb->reg[a] == 0x0);
-    cr_assert(get_zero_flag(gb));
-    cr_assert_not(get_half_flag(gb));
-    cr_assert(get_subtract_flag(gb));
-
-    free_gameboy(gb);
-}
-
 Test(decr8, half)
 {
     gameboy *gb = make_gameboy();
@@ -985,6 +969,178 @@ Test(decr8, half)
     cr_assert_not(get_zero_flag(gb));
     cr_assert(get_half_flag(gb));
     cr_assert(get_subtract_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(decr8, underflow)
+{
+    gameboy *gb = make_gameboy();
+
+    gb->reg[a] = 0x0;
+
+    decr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0xFF);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert(get_subtract_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(dechl, normal)
+{
+    gameboy *gb = make_gameboy();
+    cr_assert(gb != NULL);
+    set_value_hl(gb,0x1234);
+    gb->memory[0x1234] = 0xF;
+    dechl(gb);
+
+    cr_assert(gb->memory[0x1234] == 0xE);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+    cr_assert(get_subtract_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(dechl, zero_flag)
+{
+    gameboy *gb = make_gameboy();
+    cr_assert(gb != NULL);
+    set_value_hl(gb,0x1234);
+    gb->memory[0x1234] = 0x1;
+
+    dechl(gb);
+    cr_assert(gb->memory[0x1234] == 0x0);
+    cr_assert(get_zero_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+    cr_assert(get_subtract_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(dechl, half)
+{
+    gameboy *gb = make_gameboy();
+    cr_assert(gb != NULL);
+    set_value_hl(gb,0x1234);
+    gb->memory[0x1234] = 0x10;
+
+    dechl(gb);
+    cr_assert(gb->memory[0x1234] == 0xF);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert(get_subtract_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(dechl, underflow)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1234);
+    gb->memory[0x1234] = 0x0;
+
+    dechl(gb);
+    cr_assert(gb->memory[0x1234] == 0xFF);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert(get_subtract_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(incr8, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x5;
+
+    incr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x6);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(incr8, half)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xF;
+
+    incr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x10);
+    cr_assert_not(get_carry_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(incr8, overflow)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xFF;
+
+    incr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(inchl, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1234);
+    gb->memory[0x1234] = 0xE;
+
+    inchl(gb);
+
+    cr_assert(gb->memory[0x1234] == 0xF);
+    cr_assert_not(get_carry_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(inchl, half)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1234);
+    gb->memory[0x1234] = 0xF;
+
+    inchl(gb);
+
+    cr_assert(gb->memory[0x1234] == 0x10);
+    cr_assert_not(get_carry_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(inchl, overflow)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1234);
+    gb->memory[0x1234] = 0xFF;
+
+    inchl(gb);
+
+    cr_assert(gb->memory[0x1234] == 0x0);
+    cr_assert(get_carry_flag(gb));
+    cr_assert(get_half_flag(gb));
+    cr_assert(get_zero_flag(gb));
 
     free_gameboy(gb);
 }
