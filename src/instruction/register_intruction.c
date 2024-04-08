@@ -297,3 +297,20 @@ void sbchl(gameboy *gb)
 
     gb->reg[a] = res;
 }
+
+void sbcn8(gameboy *gb, uint8_t value) 
+{
+    uint8_t reg = value;
+    uint8_t rega = gb->reg[a];
+    uint8_t carry = get_carry_flag(gb);
+
+    uint8_t res = rega - reg - carry;
+
+
+    set_zero_flag(gb, res == 0);
+    set_subtract_flag(gb, true);
+    set_carry_flag(gb, reg + carry > rega);
+    set_half_flag(gb, ((reg & 0xF) + carry) > (rega & 0xF));
+
+    gb->reg[a] = res;
+}

@@ -30,3 +30,4 @@ void orn8(gameboy *gb, uint8_t value);
 
 void sbcr8(gameboy *gb, reg r);
 void sbchl(gameboy *gb);
+void sbcn8(gameboy *gb, uint8_t value);
