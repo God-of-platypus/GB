@@ -231,3 +231,69 @@ void inchl(gameboy *gb)
 
     gb->memory[get_value_hl(gb)] = reg;
 }
+
+void orr8(gameboy *gb, reg r){
+    set_subtract_flag(gb, false);
+    set_half_flag(gb, false);
+    set_carry_flag(gb, false);
+    set_zero_flag(gb, (gb->reg[r] & gb->reg[a]) == 0);
+
+    gb->reg[a] &= gb->reg[r];
+}
+
+void orhl(gameboy *gb) 
+{
+    set_subtract_flag(gb, false);
+    set_half_flag(gb, false);
+    set_carry_flag(gb, false);
+    gb->reg[a] &= gb->memory[get_value_hl(gb)];
+    set_zero_flag(gb, gb->reg[a] == 0);
+
+}
+
+void orn8(gameboy *gb, uint8_t value) 
+{
+    set_subtract_flag(gb, false);
+    set_half_flag(gb, false);
+    set_carry_flag(gb, false);
+    gb->reg[a] &= value;
+    set_zero_flag(gb, gb->reg[a] == 0);
+}
+
+void sbcr8(gameboy *gb, reg r)
+{
+    if (r > l || r < a)
+    {
+        return;
+    }
+    uint8_t carry = get_carry_flag(gb);
+    uint8_t reg = gb->reg[r];
+    uint8_t rega = gb->reg[a];
+
+    uint8_t res = rega - reg - carry;
+
+
+    set_zero_flag(gb, res == 0);
+    set_subtract_flag(gb, true);
+    set_carry_flag(gb, reg + carry > rega);
+    set_half_flag(gb, ((reg & 0xF) + carry) > (rega & 0xF));
+
+    gb->reg[a] = res;
+}
+
+void sbchl(gameboy *gb) 
+{
+    uint8_t reg = gb->memory[get_value_hl(gb)];
+    uint8_t rega = gb->reg[a];
+    uint8_t carry = get_carry_flag(gb);
+
+    uint8_t res = rega - reg - carry;
+
+
+    set_zero_flag(gb, res == 0);
+    set_subtract_flag(gb, true);
+    set_carry_flag(gb, reg + carry > rega);
+    set_half_flag(gb, ((reg & 0xF) + carry) > (rega & 0xF));
+
+    gb->reg[a] = res;
+}

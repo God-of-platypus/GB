@@ -25,3 +25,8 @@ void incr8(gameboy *gb, reg r);
 void inchl(gameboy *gb);
 
 void orr8(gameboy *gb, reg r);
+void orhl(gameboy *gb);
+void orn8(gameboy *gb, uint8_t value);
+
+void sbcr8(gameboy *gb, reg r);
+void sbchl(gameboy *gb);
