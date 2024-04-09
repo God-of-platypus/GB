@@ -314,3 +314,23 @@ void sbcn8(gameboy *gb, uint8_t value)
 
     gb->reg[a] = res;
 }
+
+void subr8(gameboy *gb, reg r) 
+{
+    if (r > l || r < a)
+    {
+        return;
+    }
+    uint8_t reg = gb->reg[r];
+    uint8_t rega = gb->reg[a];
+
+    uint8_t res = rega - reg;
+
+
+    set_zero_flag(gb, res == 0);
+    set_subtract_flag(gb, true);
+    set_carry_flag(gb, reg > rega);
+    set_half_flag(gb, (reg & 0xF) > (rega & 0xF));
+
+    gb->reg[a] = res;
+}
