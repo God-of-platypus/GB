@@ -37,3 +37,4 @@ void subhl(gameboy *gb);
 void subn8(gameboy *gb, uint8_t value);
 
 void xorr8(gameboy *gb, reg r);
+void xorhl(gameboy *gb);

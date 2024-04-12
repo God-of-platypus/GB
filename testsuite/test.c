@@ -1617,3 +1617,33 @@ Test(xorr8, zero) {
 
     free_gameboy(gb);
 }
+
+Test(xorhl, normal) {
+    gameboy *gb = make_gameboy();
+
+    gb->reg[a] = 0xAA;
+    gb->memory[0x1234] = 0x55;
+
+    set_value_hl(gb, 0x1234);
+
+    xorhl(gb);
+
+    cr_assert(gb->reg[a] == 0xFF);
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(xorhl, zero) {
+    gameboy *gb = make_gameboy();
+
+    gb->reg[a] = 0xAA;
+    gb->memory[0x1234] = 0xAA;
+    set_value_hl(gb, 0x1234);
+    xorhl(gb);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
