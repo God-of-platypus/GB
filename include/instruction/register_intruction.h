@@ -33,3 +33,4 @@ void sbchl(gameboy *gb);
 void sbcn8(gameboy *gb, uint8_t value);
 
 void subr8(gameboy *gb, reg r);
+void subhl(gameboy *gb);

@@ -1555,3 +1555,77 @@ Test(subr8, carry)
 
     free_gameboy(gb);
 }
+
+Test(subhl, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xF2;
+    gb->memory[0x1234] = 0x1;
+    set_value_hl(gb, 0x1234);
+
+    subhl(gb);
+
+    cr_assert(gb->reg[a] == 0xF1);
+    cr_assert(get_subtract_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+
+Test(subhl, half_carry)
+{
+    gameboy *gb = make_gameboy();
+
+    gb->reg[a] = 0x1E;
+    gb->memory[0x1234] = 0xF;
+    set_value_hl(gb, 0x1234);
+
+    subhl(gb);
+
+    cr_assert(gb->reg[a] == 0xF, "Math is hard");
+    cr_assert(get_subtract_flag(gb), "What the fuck");
+    cr_assert_not(get_carry_flag(gb), "WTH");
+    cr_assert(get_half_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(subhl, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x1;
+    gb->memory[0x1234] = 0x1;
+    set_value_hl(gb, 0x1234);
+
+    subhl(gb);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_subtract_flag(gb));
+    cr_assert(get_zero_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(subhl, carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xF;
+    gb->memory[0x1234] = 0x10;
+    set_value_hl(gb, 0x1234);
+
+    subhl(gb);
+
+    cr_assert(gb->reg[a] == 0xFF);
+    cr_assert(get_carry_flag(gb));
+    cr_assert_not(get_half_flag(gb), "Maybe");
+    cr_assert(get_subtract_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
