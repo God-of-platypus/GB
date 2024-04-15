@@ -349,3 +349,13 @@ void xorhl(gameboy *gb) {
     set_subtract_flag(gb, false);
     set_zero_flag(gb, gb->reg[a] == 0);
 }
+
+void xorn8(gameboy *gb, uint8_t value)
+{
+    gb->reg[a] ^= value;
+
+    set_half_flag(gb, false);
+    set_carry_flag(gb, false);
+    set_subtract_flag(gb, false);
+    set_zero_flag(gb, gb->reg[a] == 0);
+}

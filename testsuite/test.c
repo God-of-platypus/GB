@@ -1647,3 +1647,29 @@ Test(xorhl, zero) {
 
     free_gameboy(gb);
 }
+
+Test(xorn8, normal) {
+    gameboy *gb = make_gameboy();
+
+    gb->reg[a] = 0xAA;
+
+    xorn8(gb, 0x55);
+
+    cr_assert(gb->reg[a] == 0xFF);
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(xorn8, zero) {
+    gameboy *gb = make_gameboy();
+
+    gb->reg[a] = 0xAA;
+    xorn8(gb, 0xAA);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
