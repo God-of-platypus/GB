@@ -8,6 +8,7 @@ add_executable(test test.c
     ../src/gameboy/gameboy.c
     ../src/register/register.c
     ../src/instruction/register_intruction.c
+    ../src/instruction/16bitop.c
     )                                            
 
 target_include_directories(test PUBLIC "../include/")

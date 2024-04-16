@@ -5,6 +5,7 @@
 #include "gameboy/gameboy.h"
 #include "instruction/register_intruction.h"
 #include "register/register.h"
+#include "instruction/16bitop.h"
 
 Test(gameboy, builder_with_memory) {
     gameboy *gb = make_gameboy();
@@ -1673,3 +1674,70 @@ Test(xorn8, zero) {
     free_gameboy(gb);
 }
 
+Test(addr16, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    set_value_de(gb, 0x1111);
+
+    addr16(gb, de);
+
+    cr_assert(0x2222 == get_value_hl(gb));
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_subtract_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(addr16, zero)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x0);
+    set_value_de(gb, 0x0);
+
+    addr16(gb, de);
+
+    cr_assert(0x0 == get_value_hl(gb));
+    cr_assert(get_zero_flag(gb));
+    cr_assert_not(get_subtract_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+    cr_assert_not(get_half_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(addr16, half_flag)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1FFF);
+    set_value_de(gb, 0x1);
+
+    addr16(gb, de);
+
+    cr_assert(0x2000 == get_value_hl(gb));
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_subtract_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+    cr_assert(get_half_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(addr16, carry)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0xFFFF);
+    set_value_de(gb, 0x2);
+
+    addr16(gb, de);
+
+    cr_assert(0x1 == get_value_hl(gb));
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_subtract_flag(gb));
+    cr_assert(get_carry_flag(gb));
+    cr_assert(get_half_flag(gb));
+
+    free_gameboy(gb);
+}

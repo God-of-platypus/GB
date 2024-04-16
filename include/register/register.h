@@ -21,6 +21,14 @@ typedef enum
     l = 7,
 } reg;
 
+typedef enum
+{
+    af = 0,
+    bc = 1,
+    de = 2,
+    hl = 3, 
+} r16;
+
 void set_value_af(gameboy *gb, uint16_t value);
 void set_value_bc(gameboy *gb, uint16_t value);
 void set_value_de(gameboy *gb, uint16_t value);
