@@ -1741,3 +1741,27 @@ Test(addr16, carry)
 
     free_gameboy(gb);
 }
+
+Test(decr16, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_de(gb, 0x1111);
+
+    decr16(gb, de);
+
+    cr_assert(get_value_de(gb) == 0x1110);
+
+    free_gameboy(gb);
+}
+
+Test(decr16, zero)
+{
+    gameboy *gb = make_gameboy();
+    set_value_de(gb, 0x0);
+
+    decr16(gb, de);
+
+    cr_assert(get_value_de(gb) == 0xFFFF);
+
+    free_gameboy(gb);
+}
