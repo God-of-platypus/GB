@@ -9,6 +9,7 @@ add_executable(test test.c
     ../src/register/register.c
     ../src/instruction/register_intruction.c
     ../src/instruction/16bitop.c
+    ../src/instruction/bitop.c
     )                                            
 
 target_include_directories(test PUBLIC "../include/")

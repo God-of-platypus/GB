@@ -6,6 +6,7 @@
 #include "instruction/register_intruction.h"
 #include "register/register.h"
 #include "instruction/16bitop.h"
+#include "instruction/bitop.h"
 
 Test(gameboy, builder_with_memory) {
     gameboy *gb = make_gameboy();
@@ -1786,6 +1787,32 @@ Test(incr16, FFFF)
     incr16(gb, de);
 
     cr_assert(get_value_de(gb) == 0x0);
+
+    free_gameboy(gb);
+}
+
+Test(bitr8, true)
+{
+    gameboy *gb = make_gameboy();
+
+    gb->reg[b] = 0x1;
+
+    bitr8(gb, b, 0);
+
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(bitr8, false)
+{
+    gameboy *gb = make_gameboy();
+
+    gb->reg[b] = 0x1;
+
+    bitr8(gb, b, 5);
+
+    cr_assert(get_zero_flag(gb));
 
     free_gameboy(gb);
 }
