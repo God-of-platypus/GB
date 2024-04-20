@@ -50,3 +50,27 @@ void decr16(gameboy *gb, r16 r16) {
             return;
     }
 }
+
+void incr16(gameboy *gb, r16 r16) {
+    uint16_t val;
+    switch (r16) {
+        case af:
+            val = get_value_af(gb);
+            set_value_af(gb, val + 1);
+            break;
+        case bc:
+            val = get_value_bc(gb);
+            set_value_bc(gb, val + 1);
+            break;
+        case de:
+            val = get_value_de(gb);
+            set_value_de(gb, val + 1);
+            break;
+        case hl:
+            val = get_value_hl(gb);
+            set_value_hl(gb, val + 1);
+            break;
+        default:
+            return;
+    }
+}

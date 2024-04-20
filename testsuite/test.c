@@ -1765,3 +1765,27 @@ Test(decr16, zero)
 
     free_gameboy(gb);
 }
+
+Test(incr16, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_de(gb, 0x0);
+
+    incr16(gb, de);
+
+    cr_assert(get_value_de(gb) == 0x1);
+
+    free_gameboy(gb);
+}
+
+Test(incr16, FFFF)
+{
+    gameboy *gb = make_gameboy();
+    set_value_de(gb, 0xFFFF);
+
+    incr16(gb, de);
+
+    cr_assert(get_value_de(gb) == 0x0);
+
+    free_gameboy(gb);
+}
