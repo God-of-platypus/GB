@@ -1846,3 +1846,14 @@ Test(bithl, false)
 
     free_gameboy(gb);
 }
+
+Test(resr8, test)
+{
+    gameboy *gb = make_gameboy();
+
+    gb->reg[c] = 0xFF;
+
+    resr8(gb, c, 7);
+
+    cr_assert(gb->reg[c] == 0x7F);
+}
