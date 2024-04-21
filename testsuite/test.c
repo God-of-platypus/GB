@@ -1885,3 +1885,18 @@ Test(setr8, test)
 
     free_gameboy(gb);
 }
+
+Test(sethl, test)
+{
+    gameboy *gb = make_gameboy();
+
+    set_value_hl(gb, 0x1111);
+
+    gb->memory[0x1111] = 0x0;
+
+    sethl(gb, 7);
+
+    cr_assert(gb->memory[get_value_hl(gb)] == 0x80);
+
+    free_gameboy(gb);
+}
