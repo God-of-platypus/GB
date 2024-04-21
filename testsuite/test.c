@@ -1816,3 +1816,33 @@ Test(bitr8, false)
 
     free_gameboy(gb);
 }
+
+Test(bithl, true)
+{
+    gameboy *gb = make_gameboy();
+
+    set_value_hl(gb, 0x4321);
+
+    gb->memory[0x4321] = 0x1;
+
+    bithl(gb, 0);
+
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(bithl, false)
+{
+    gameboy *gb = make_gameboy();
+
+    set_value_hl(gb, 0x4321);
+
+    gb->memory[0x4321] = 0x1;
+
+    bithl(gb, 7);
+
+    cr_assert(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
