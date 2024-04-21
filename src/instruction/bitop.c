@@ -72,3 +72,14 @@ void swapr8(gameboy *gb, reg r)
     set_carry_flag(gb, false);
     set_zero_flag(gb, gb->reg[r] == 0);
 }
+
+void swaphl(gameboy *gb)
+{
+    uint8_t value = gb->memory[get_value_hl(gb)];
+    value = ((value & 0xF0) >> 4) | ((value & 0xF) << 4);
+    set_subtract_flag(gb, false);
+    set_half_flag(gb, false);
+    set_carry_flag(gb, false);
+    set_zero_flag(gb, value == 0);
+    gb->memory[get_value_hl(gb)] = value;
+}

@@ -12,3 +12,4 @@ void setr8(gameboy *gb, reg r, uint8_t value);
 void sethl(gameboy *gb, uint8_t value);
 
 void swapr8(gameboy *gb, reg r);
+void swaphl(gameboy *gb);

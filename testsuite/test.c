@@ -1927,3 +1927,31 @@ Test(swapr8, zero)
 
     free_gameboy(gb);
 }
+
+Test(swaphl, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->memory[0x1234] = 0x24;
+    set_value_hl(gb, 0x1234);
+
+    swaphl(gb);
+
+    cr_assert(gb->memory[0x1234] == 0x42);
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(swaphl, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->memory[0x1234] = 0x0;
+    set_value_hl(gb, 0x1234);
+
+    swaphl(gb);
+
+    cr_assert(gb->memory[0x1234] == 0x0);
+    cr_assert(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
