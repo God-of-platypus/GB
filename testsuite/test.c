@@ -1874,3 +1874,14 @@ Test(reshl, test)
 
     free_gameboy(gb);
 }
+
+Test(setr8, test)
+{
+    gameboy *gb = make_gameboy();
+
+    setr8(gb, d, 5);
+
+    cr_assert(gb->reg[d] == 0x20);
+
+    free_gameboy(gb);
+}

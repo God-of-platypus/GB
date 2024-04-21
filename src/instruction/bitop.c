@@ -42,3 +42,12 @@ void reshl(gameboy *gb, uint8_t value)
     }
     gb->memory[get_value_hl(gb)] &= ~(1 << value);
 }
+
+void setr8(gameboy *gb, reg r, uint8_t value)
+{
+    if (value > 7 || r < a || r > l)
+    {
+        return;
+    }
+    gb->reg[r] |= (1 << value);
+}
