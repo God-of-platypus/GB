@@ -1900,3 +1900,30 @@ Test(sethl, test)
 
     free_gameboy(gb);
 }
+
+Test(swapr8, normal)
+{
+    gameboy *gb = make_gameboy();
+
+    gb->reg[e] = 0x12;
+
+    swapr8(gb, e);
+
+    cr_assert(gb->reg[e] == 0x21);
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(swapr8, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x0;
+
+    swapr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
