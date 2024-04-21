@@ -7,6 +7,7 @@
 #include "register/register.h"
 #include "instruction/16bitop.h"
 #include "instruction/bitop.h"
+#include "instruction/bitshiftop.h"
 
 Test(gameboy, builder_with_memory) {
     gameboy *gb = make_gameboy();
@@ -1949,9 +1950,65 @@ Test(swaphl, zero)
     set_value_hl(gb, 0x1234);
 
     swaphl(gb);
-
     cr_assert(gb->memory[0x1234] == 0x0);
     cr_assert(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlr8, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x12;
+
+    rlr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x24);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlr8, carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xFF;
+
+    rlr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0xFE);
+    cr_assert(get_carry_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlr8, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x0;
+
+    rlr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlr8, with_carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x2;
+    set_carry_flag(gb, true);
+
+    rlr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x5);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
 
     free_gameboy(gb);
 }
