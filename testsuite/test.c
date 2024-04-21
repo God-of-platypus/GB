@@ -1856,4 +1856,21 @@ Test(resr8, test)
     resr8(gb, c, 7);
 
     cr_assert(gb->reg[c] == 0x7F);
+
+    free_gameboy(gb);
+}
+
+Test(reshl, test)
+{
+    gameboy *gb = make_gameboy();
+
+    set_value_hl(gb, 0x1111);
+
+    gb->memory[0x1111] = 0xFF;
+
+    reshl(gb, 7);
+
+    cr_assert(gb->memory[get_value_hl(gb)] == 0x7F);
+
+    free_gameboy(gb);
 }
