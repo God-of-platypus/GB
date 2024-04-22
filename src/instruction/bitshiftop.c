@@ -32,3 +32,17 @@ void rlhl(gameboy *gb)
 
     gb->memory[w] = value;
 }
+
+void rla(gameboy *gb)
+{
+    uint8_t c = get_carry_flag(gb);
+    uint8_t s = (gb->reg[a] & (1 << 7)) >> 7;
+    uint8_t value = (gb->reg[a] << 1) | c;
+
+    set_carry_flag(gb, s == 1);
+    set_half_flag(gb, false);
+    set_subtract_flag(gb, false);
+    set_zero_flag(gb, value == 0);
+
+    gb->reg[a] = value;
+}

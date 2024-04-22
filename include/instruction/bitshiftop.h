@@ -3,3 +3,4 @@
 
 void rlr8(gameboy *gb, reg r);
 void rlhl(gameboy *gb);
+void rla(gameboy *gb);
