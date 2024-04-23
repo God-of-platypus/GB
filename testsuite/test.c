@@ -1,6 +1,5 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
-#include <stdio.h>
 
 #include "gameboy/gameboy.h"
 #include "instruction/register_intruction.h"
@@ -2169,6 +2168,51 @@ Test(rlcr8, zero)
     cr_assert(gb->reg[a] == 0x0);
     cr_assert(get_zero_flag(gb));
     cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlchl, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x12;
+
+    rlchl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x24, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rlchl, carry)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0xFF;
+
+    rlchl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0xFF, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rlchl, zero)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x00;
+
+    rlchl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x00, "%x", gb->memory[0x1111]);
+    cr_assert(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
 
     free_gameboy(gb);
 }
