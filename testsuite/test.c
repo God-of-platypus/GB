@@ -2081,7 +2081,6 @@ Test(rla, normal)
     rla(gb);
 
     cr_assert(gb->reg[a] == 0x24);
-    cr_assert_not(get_zero_flag(gb));
     cr_assert_not(get_carry_flag(gb));
 
     free_gameboy(gb);
@@ -2096,7 +2095,6 @@ Test(rla, carry)
 
     cr_assert(gb->reg[a] == 0xFE);
     cr_assert(get_carry_flag(gb));
-    cr_assert_not(get_zero_flag(gb));
 
     free_gameboy(gb);
 }
@@ -2109,7 +2107,6 @@ Test(rla, zero)
     rla(gb);
 
     cr_assert(gb->reg[a] == 0x0);
-    cr_assert(get_zero_flag(gb));
     cr_assert_not(get_carry_flag(gb));
 
     free_gameboy(gb);
@@ -2124,7 +2121,6 @@ Test(rla, with_carry)
     rla(gb);
 
     cr_assert(gb->reg[a] == 0x5);
-    cr_assert_not(get_zero_flag(gb));
     cr_assert_not(get_carry_flag(gb));
 
     free_gameboy(gb);

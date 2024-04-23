@@ -42,7 +42,7 @@ void rla(gameboy *gb)
     set_carry_flag(gb, s == 1);
     set_half_flag(gb, false);
     set_subtract_flag(gb, false);
-    set_zero_flag(gb, value == 0);
+    set_zero_flag(gb, false);
 
     gb->reg[a] = value;
 }
