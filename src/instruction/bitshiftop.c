@@ -77,3 +77,16 @@ void rlchl(gameboy *gb)
 
     gb->memory[w] = value;
 }
+
+void rlca(gameboy *gb)
+{
+    uint8_t s = (gb->reg[a] & (1 << 7)) >> 7;
+    uint8_t value = (gb->reg[a] << 1) | s;
+
+    set_carry_flag(gb, s == 1);
+    set_half_flag(gb, false);
+    set_subtract_flag(gb, false);
+    set_zero_flag(gb, false);
+
+    gb->reg[a] = value;
+}

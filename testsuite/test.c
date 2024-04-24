@@ -2212,3 +2212,43 @@ Test(rlchl, zero)
 
     free_gameboy(gb);
 }
+
+Test(rlca, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x12;
+
+    rlca(gb);
+
+    cr_assert(gb->reg[a] == 0x24);
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlca, carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xFF;
+
+    rlca(gb);
+
+    cr_assert(gb->reg[a] == 0xFF);
+    cr_assert(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rlca, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x0;
+
+    rla(gb);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
