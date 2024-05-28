@@ -154,3 +154,17 @@ void rrcr8(gameboy *gb, reg r)
 
     gb->reg[r] = value;
 }
+
+void rrchl(gameboy *gb)
+{
+    uint16_t w = get_value_hl(gb);
+    uint8_t s = (gb->memory[w] & 0x1);
+    uint8_t value = (gb->memory[w] >> 1) | (s << 7);
+
+    set_zero_flag(gb, value == 0);
+    set_subtract_flag(gb, false);
+    set_half_flag(gb, false);
+    set_carry_flag(gb, s == 1);
+
+    gb->memory[w] = value;
+}

@@ -2464,3 +2464,48 @@ Test(rrcr8, zero)
 
     free_gameboy(gb);
 }
+
+Test(rrchl, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x12;
+
+    rrchl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x09, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rrchl, carry)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0xFF;
+
+    rrchl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0xFF, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rrchl, zero)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x00;
+
+    rrchl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x00, "%x", gb->memory[0x1111]);
+    cr_assert(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
