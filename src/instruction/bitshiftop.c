@@ -90,3 +90,22 @@ void rlca(gameboy *gb)
 
     gb->reg[a] = value;
 }
+
+void rrr8(gameboy *gb, reg r)
+{
+    if (r > l || r < a)
+    {
+        return;
+    }
+    uint8_t c = get_carry_flag(gb);
+    uint8_t s = gb->reg[r] & 0x1;
+    uint8_t value = (gb->reg[r] >> 1 ) | (c << 7);
+
+    set_carry_flag(gb, s == 1);
+    set_half_flag(gb, false);
+    set_subtract_flag(gb, false);
+    set_zero_flag(gb, value == 0);
+
+    gb->reg[r] = value;
+}
+

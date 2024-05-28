@@ -2252,3 +2252,60 @@ Test(rlca, zero)
     free_gameboy(gb);
 }
 
+Test(rrr8, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x12;
+
+    rrr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x9);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rrr8, carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xFF;
+
+    rrr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x7F, "Actual value: 0x%x", gb->reg[a]);
+    cr_assert(get_carry_flag(gb));
+    cr_assert_not(get_zero_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rrr8, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x0;
+
+    rrr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rrr8, with_carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x02;
+    set_carry_flag(gb, true);
+
+    rrr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x81, "Actual value: 0x%x", gb->reg[a]);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
