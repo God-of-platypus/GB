@@ -2422,3 +2422,45 @@ Test(rra, with_carry)
 
     free_gameboy(gb);
 }
+
+Test(rrcr8, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x12;
+
+    rrcr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x9);
+    cr_assert_not(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
+
+Test(rrcr8, carry)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0xFF;
+
+    rrcr8(gb, a);
+
+    cr_assert(gb->reg[a] == 0xFF, "1");
+    cr_assert(get_carry_flag(gb), "2");
+    cr_assert_not(get_zero_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rrcr8, zero)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x0;
+
+    rrcr8(gb,a);
+
+    cr_assert(gb->reg[a] == 0x0);
+    cr_assert(get_zero_flag(gb));
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}
