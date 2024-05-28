@@ -2309,3 +2309,63 @@ Test(rrr8, with_carry)
     free_gameboy(gb);
 }
 
+Test(rrhl, normal)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x12;
+
+    rrhl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x9, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rrhl, carry)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0xFF;
+
+    rrhl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x7F, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rrhl, zero)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x00;
+
+    rrhl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x00, "%x", gb->memory[0x1111]);
+    cr_assert(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
+
+Test(rrhl, with_carry)
+{
+    gameboy *gb = make_gameboy();
+    set_value_hl(gb, 0x1111);
+    gb->memory[0x1111] = 0x00;
+    set_carry_flag(gb, true);
+
+    rrhl(gb);
+
+    cr_assert(gb->memory[0x1111] == 0x80, "%x", gb->memory[0x1111]);
+    cr_assert_not(get_zero_flag(gb), "2");
+    cr_assert_not(get_carry_flag(gb), "3");
+
+    free_gameboy(gb);
+}
