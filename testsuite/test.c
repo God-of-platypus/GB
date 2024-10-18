@@ -2549,3 +2549,14 @@ Test(rrca, zero)
     free_gameboy(gb);
 }
 
+Test(slra8, normal)
+{
+    gameboy *gb = make_gameboy();
+    gb->reg[a] = 0x1;
+    slar8(gb, a);
+
+    cr_assert(gb->reg[a] == 0x2);
+    cr_assert_not(get_carry_flag(gb));
+
+    free_gameboy(gb);
+}

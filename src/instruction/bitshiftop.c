@@ -181,3 +181,15 @@ void rrca(gameboy *gb)
 
     gb->reg[a] = value;
 }
+
+void slar8(gameboy *gb, reg r)
+{
+    uint8_t carry = gb->reg[r] & 0x8;
+    gb->reg[r] <<= 1;
+
+    set_half_flag(gb, false);
+    set_subtract_flag(gb, false);
+    set_zero_flag(gb, gb->reg[r] == 0);
+    set_carry_flag(gb, carry == 1);
+
+}
